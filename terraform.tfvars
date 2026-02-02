@@ -147,8 +147,8 @@ instances = {
 
 #Storage
 buckets = {
-   newBucket = {
-    name                        = "devbucketpoc"
+   appengine = {
+    name                        = "appenginebucketpoc"
     location                    = "asia-south1"
     storage_class               = "Standard"
     uniform_bucket_level_access = true
@@ -169,5 +169,42 @@ cloudrun_services = {
     region = "asia-south1"
     image  = "us-docker.pkg.dev/cloudrun/container/hello"
     public = true
+  }
+}
+
+#App Engine
+create_app_engine = false
+
+app_engine_location_id = "asia-south1"
+
+app_engine_services = {
+  default = {
+    service_name = "default"
+    runtime      = "nodejs20"
+    version_id   = "v1"
+
+    entrypoint = {
+      shell = "node server.js"
+    }
+
+    source_url   = "https://storage.googleapis.com/appengine-artifacts/devbucketpoc.zip"
+    env_vars = {
+      ENV = "prod"
+    }
+
+    api = {
+      service_name = "api"
+      runtime      = "nodejs20"
+      version_id   = "v1"
+
+      entrypoint = {
+        shell = "node server.js"
+      }
+
+      source_url   = "https://storage.googleapis.com/appengine-artifacts/devbucketpoc.zip"
+      env_vars = {
+        ENV = "prod"
+      }
+    }
   }
 }
